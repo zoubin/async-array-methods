@@ -1,0 +1,37 @@
+{
+  "name": "async-array-methods",
+  "version": "0.0.1",
+  "description": "Async methods to operate on collections",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint . && tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zoubin/async-array-methods.git"
+  },
+  "keywords": [
+    "async",
+    "array",
+    "each",
+    "forEach",
+    "filter",
+    "map",
+    "reduce"
+  ],
+  "author": "zoubin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zoubin/async-array-methods/issues"
+  },
+  "homepage": "https://github.com/zoubin/async-array-methods#readme",
+  "dependencies": {
+    "arrayify-slice": "^1.0.0",
+    "callback-sequence": "^1.2.0",
+    "run-callback": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^1.5.1",
+    "tap": "^1.4.1"
+  }
+}
