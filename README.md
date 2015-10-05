@@ -3,9 +3,7 @@ Async methods to operate on collections.
 
 ## Usage
 
-```javascript
-var methods = require('async-array-methods');
-```
+[![npm](https://nodei.co/npm/async-array-methods.png)](https://www.npmjs.com/package/async-array-methods)
 
 Methods:
 
