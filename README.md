@@ -1,9 +1,14 @@
 # async-array-methods
 Async methods to operate on collections.
 
-## Usage
+[![npm](https://nodei.co/npm/async-array-methods.png?downloads=true)](https://www.npmjs.org/package/async-array-methods)
 
-[![npm](https://nodei.co/npm/async-array-methods.png)](https://www.npmjs.com/package/async-array-methods)
+[![version](https://img.shields.io/npm/v/async-array-methods.svg)](https://www.npmjs.org/package/async-array-methods)
+[![status](https://travis-ci.org/zoubin/async-array-methods.svg?branch=master)](https://travis-ci.org/zoubin/async-array-methods)
+[![dependencies](https://david-dm.org/zoubin/async-array-methods.svg)](https://david-dm.org/zoubin/async-array-methods)
+[![devDependencies](https://david-dm.org/zoubin/async-array-methods/dev-status.svg)](https://david-dm.org/zoubin/async-array-methods#info=devDependencies)
+
+## Usage
 
 Methods:
 
@@ -80,39 +85,42 @@ reduce(
 
 ## chain
 
-Signature: `chain(arr, ...callbacks, done)`
+Signature: `chain(arr, callbacks, done)`
 
 ```javascript
-chain(
+var methods = require('async-array-methods')
+methods.chain(
   [1, 2, 3, 4],
-  function (res) {
-    return res.map(function (r) {
-      return ++r;
-    });
-  },
-  ['filter', odd],
-  function (res, next) {
-    process.nextTick(function () {
-      next(null, res.map(function (r) {
-        return ++r;
-      }));
-    });
-  },
-  ['map', plusplus],
-  function (res) {
-    return new Promise(function (rs) {
+  [
+    function (res) {
+      return res.map(function (r) {
+        return ++r
+      })
+    },
+    [methods, 'filter', odd],
+    function (res, next) {
       process.nextTick(function () {
-        rs(res.map(function (r) {
-          return ++r;
-        }));
-      });
-    });
-  },
-  ['reduce', sum, 10],
+        next(null, res.map(function (r) {
+          return ++r
+        }))
+      })
+    },
+    [methods, 'map', plusplus],
+    function (res) {
+      return new Promise(function (rs) {
+        process.nextTick(function () {
+          rs(res.map(function (r) {
+            return ++r
+          }))
+        })
+      })
+    },
+    [methods, 'reduce', sum, 10],
+  ],
   function (err, res) {
-    console.log(err, res);
+    console.log(err, res)
   }
-);
+)
 
 function odd(v) {
   return v % 2;
