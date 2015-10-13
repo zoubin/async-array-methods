@@ -14,6 +14,7 @@ Methods:
 
 - [filter](#filter)
 - [map](#map)
+- [forEach](#forEach)
 - [reduce](#reduce)
 - [chain](#chain)
 
@@ -35,17 +36,21 @@ filter(
   function (v) {
     return new Promise(function (rs) {
       process.nextTick(function () {
-        rs(v % 2);
-      });
-    });
+        rs(v % 2)
+      })
+    })
   },
   function (err, results) {
-    console.log('promise:', results);
+    console.log('promise:', results)
   }
-);
+)
 ```
 
 ## map
+
+`fn` is called with elements in parallel.
+If you want to run `fn` in sequence,
+use [forEach](#forEach) instead.
 
 Signature: `map(arr, fn, done)`
 
@@ -54,13 +59,39 @@ map(
   [1, 2, 3, 4],
   function (v, i, a, next) {
     process.nextTick(function () {
-      next(null, v << 2);
-    });
+      next(null, v << 2)
+    })
   },
   function (err, results) {
-    console.log('async:', results);
+    console.log('async:', results)
   }
-);
+)
+
+```
+
+## forEach
+
+`fn` is called with elements in sequence.
+If you want to run `fn` in parallel,
+use [map](#map) instead.
+
+Signature: `forEach(arr, fn, done)`
+
+```javascript
+var count = 0
+
+forEach(
+  [1, 2, 3, 4],
+  function (v, i, _, next) {
+    process.nextTick(function () {
+      console.log(count++ === i)
+      next(null, v << 2)
+    })
+  },
+  function (err, results) {
+    console.log(results)
+  }
+)
 
 ```
 
@@ -73,13 +104,13 @@ reduce(
   [1, 2, 3, 4],
   function (a, b, i, arr, next) {
     process.nextTick(function () {
-      next(null, a + b);
-    });
+      next(null, a + b)
+    })
   },
   function (err, results) {
-    console.log('async:', results);
+    console.log('async:', results)
   }
-);
+)
 
 ```
 
@@ -123,21 +154,21 @@ methods.chain(
 )
 
 function odd(v) {
-  return v % 2;
+  return v % 2
 }
 
 function plusplus(v, i, a, next) {
   process.nextTick(function () {
-    next(null, ++v);
-  });
+    next(null, ++v)
+  })
 }
 
 function sum(a, b) {
   return new Promise(function (rs) {
     process.nextTick(function () {
-      rs(a + b);
-    });
-  });
+      rs(a + b)
+    })
+  })
 }
 
 ```
