@@ -14,7 +14,7 @@ Methods:
 
 - [filter](#filter)
 - [map](#map)
-- [forEach](#forEach)
+- [forEach](#foreach)
 - [reduce](#reduce)
 - [chain](#chain)
 
@@ -50,7 +50,7 @@ filter(
 
 `fn` is called with elements in parallel.
 If you want to run `fn` in sequence,
-use [forEach](#forEach) instead.
+use [forEach](#foreach) instead.
 
 Signature: `map(arr, fn, done)`
 
