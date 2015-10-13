@@ -2,7 +2,19 @@ var test = require('tape')
 var map = require('..').map
 
 test('map', function(t) {
-  t.plan(4)
+  t.plan(5)
+  map(
+    [],
+    function (v, i, a, next) {
+      process.nextTick(function () {
+        next(null, v << 2)
+      })
+    },
+    function (err, results) {
+      t.same(results, [], 'empty array')
+    }
+  )
+
   map(
     [1, 2, 3, 4],
     function (v) {
