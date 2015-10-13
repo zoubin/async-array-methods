@@ -1,6 +1,6 @@
 {
   "name": "async-array-methods",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Async methods to operate on collections",
   "main": "index.js",
   "scripts": {
