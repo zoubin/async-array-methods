@@ -1,14 +1,16 @@
 var map = require('..').map
 
+var log = console.log.bind(console)
+
 map(
   [1, 2, 3, 4],
   function (v) {
-    return v << 2
+    return v << this.num
   },
-  function (err, results) {
-    console.log('sync:', results)
-  }
+  { num: 2 }
 )
+// [4, 8, 12, 16]
+.then(log)
 
 map(
   [1, 2, 3, 4],
@@ -17,10 +19,10 @@ map(
       next(null, v << 2)
     })
   },
-  function (err, results) {
-    console.log('async:', results)
-  }
+  { num: 2 }
 )
+// [4, 8, 12, 16]
+.then(log)
 
 map(
   [1, 2, 3, 4],
@@ -31,8 +33,8 @@ map(
       })
     })
   },
-  function (err, results) {
-    console.log('promise:', results)
-  }
+  { num: 2 }
 )
+// [4, 8, 12, 16]
+.then(log)
 

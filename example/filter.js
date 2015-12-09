@@ -4,11 +4,12 @@ filter(
   [1, 2, 3, 4],
   function (v) {
     return v % 2
-  },
-  function (err, results) {
-    console.log('sync:', results)
   }
 )
+.then(function (res) {
+  // [1, 3]
+  console.log(res)
+})
 
 filter(
   [1, 2, 3, 4],
@@ -16,11 +17,12 @@ filter(
     process.nextTick(function () {
       next(null, v % 2)
     })
-  },
-  function (err, results) {
-    console.log('async:', results)
   }
 )
+.then(function (res) {
+  // [1, 3]
+  console.log(res)
+})
 
 filter(
   [1, 2, 3, 4],
@@ -30,9 +32,10 @@ filter(
         rs(v % 2)
       })
     })
-  },
-  function (err, results) {
-    console.log('promise:', results)
   }
 )
+.then(function (res) {
+  // [1, 3]
+  console.log(res)
+})
 

@@ -1,70 +1,35 @@
-var test = require('tape')
-var reduce = require('..').reduce
+var test = require('tap').test
+var reduce = require('../lib/reduce')
 
-test('reduce, sync', function(t) {
-  t.plan(1)
-  reduce(
+test('sync', function(t) {
+  return reduce(
     [1, 2, 3, 4],
     function (a, b) {
       return a + b
-    },
-    function (err, results) {
-      t.equal(results, 10, 'sync')
     }
   )
+  .then(function (results) {
+    t.equal(results, 10, 'sync')
+  })
 })
 
-test('reduce, async', function(t) {
-  t.plan(1)
-
-  reduce(
+test('async', function(t) {
+  return reduce(
     [1, 2, 3, 4],
     function (a, b, i, arr, next) {
       process.nextTick(function () {
         next(null, a + b)
       })
     },
-    10,
-    function (err, results) {
-      t.equal(results, 20, 'async')
-    }
+    10
   )
+  .then(function (results) {
+    t.equal(results, 20, 'async')
+  })
 })
 
-test('reduce, error', function(t) {
-  t.plan(2)
-
-  try {
-    reduce(
-      [],
-      function (a, b, i, arr, next) {
-        process.nextTick(function () {
-          next(null, a + b)
-        })
-      }
-    )
-  } catch (e) {
-    t.ok(true)
-  }
-
-  reduce(
-    [1, 2, 3, 4],
-    function (a, b, i, arr, next) {
-      process.nextTick(function () {
-        next([a, b])
-      })
-    },
-    10,
-    function (err) {
-      t.same(err, [10, 1])
-    }
-  )
-})
-
-test('reduce, promise', function(t) {
-  t.plan(1)
-
-  reduce(
+test('promise', function(t) {
+  return reduce(
     [1, 2, 3, 4],
     function (a, b) {
       return new Promise(function (rs) {
@@ -73,11 +38,66 @@ test('reduce, promise', function(t) {
         })
       })
     },
-    10,
-    function (err, results) {
-      t.equal(results, 20, 'promise')
+    10
+  )
+  .then(function (results) {
+    t.equal(results, 20, 'promise')
+  })
+})
+
+test('invalid input', function(t) {
+  return reduce(
+    [],
+    function (a, b, i, arr, next) {
+      process.nextTick(function () {
+        next(null, a + b)
+      })
     }
   )
+  .catch(function (e) {
+    t.ok(e instanceof Error)
+  })
+})
 
+test('single element, no initial', function(t) {
+  return reduce(
+    [1],
+    function (a, b, i, arr, next) {
+      process.nextTick(function () {
+        next([a, b])
+      })
+    }
+  )
+  .then(function (res) {
+    t.same(res, 1)
+  })
+})
+
+test('empty', function(t) {
+  return reduce(
+    [],
+    function (a, b) {
+      return a + b
+    },
+    1
+  )
+  .then(function (results) {
+    t.equal(results, 1)
+  })
+})
+
+test('error', function(t) {
+  return reduce(
+    [1, 2, 3, 4],
+    function (a, b, i, arr, next) {
+      process.nextTick(function () {
+        next([a, b])
+      })
+    },
+    10
+  )
+  .catch(function (err) {
+    t.same(err, [10, 1])
+  })
 })
 

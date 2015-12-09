@@ -1,31 +1,47 @@
-var test = require('tape')
-var filter = require('..').filter
+var test = require('tap').test
+var filter = require('../lib/filter')
 
-test('filter', function(t) {
-  t.plan(3)
-  filter(
+test('context', function(t) {
+  return filter(
+    [1, 2, 3, 4],
+    function (v) {
+      return v % this.num
+    },
+    { num: 2 }
+  )
+  .then(function (results) {
+    t.same(results, [1, 3])
+  })
+})
+
+test('sync', function(t) {
+  return filter(
     [1, 2, 3, 4],
     function (v) {
       return v % 2
-    },
-    function (err, results) {
-      t.same(results, [1, 3], 'sync')
     }
   )
+  .then(function (results) {
+    t.same(results, [1, 3])
+  })
+})
 
-  filter(
+test('async', function(t) {
+  return filter(
     [1, 2, 3, 4],
     function (v, i, a, next) {
       process.nextTick(function () {
         next(null, v % 2)
       })
-    },
-    function (err, results) {
-      t.same(results, [1, 3], 'async')
     }
   )
+  .then(function (results) {
+    t.same(results, [1, 3])
+  })
+})
 
-  filter(
+test('promise', function(t) {
+  return filter(
     [1, 2, 3, 4],
     function (v) {
       return new Promise(function (rs) {
@@ -33,11 +49,23 @@ test('filter', function(t) {
           rs(v % 2)
         })
       })
-    },
-    function (err, results) {
-      t.same(results, [1, 3], 'promise')
     }
   )
+  .then(function (results) {
+    t.same(results, [1, 3])
+  })
+})
 
+test('error', function(t) {
+  return filter([1, 2.2, 3, 4], function (v, i, a, next) {
+    process.nextTick(function () {
+      if (~~v !== v) {
+        return next(new Error('not an integer'))
+      }
+      next(null, v << 2)
+    })
+  }).catch(function (err) {
+    t.ok(err instanceof Error)
+  })
 })
 

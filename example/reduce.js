@@ -4,11 +4,10 @@ reduce(
   [1, 2, 3, 4],
   function (a, b) {
     return a + b
-  },
-  function (err, results) {
-    console.log('sync:', results)
   }
 )
+// 10
+.then(console.log.bind(console))
 
 reduce(
   [1, 2, 3, 4],
@@ -16,11 +15,10 @@ reduce(
     process.nextTick(function () {
       next(null, a + b)
     })
-  },
-  function (err, results) {
-    console.log('async:', results)
   }
 )
+// 10
+.then(console.log.bind(console))
 
 reduce(
   [1, 2, 3, 4],
@@ -30,9 +28,8 @@ reduce(
         rs(a + b)
       })
     })
-  },
-  function (err, results) {
-    console.log('promise:', results)
   }
 )
+// 10
+.then(console.log.bind(console))
 
