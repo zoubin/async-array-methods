@@ -11,4 +11,8 @@ forEach(
     })
   }
 )
+.then(function (arr) {
+  // [1, 2, 3, 4]
+  console.log(arr)
+})
 
