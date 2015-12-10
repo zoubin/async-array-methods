@@ -1,4 +1,10 @@
-<!-- 709af81 1449665101000 -->
+<!-- 8c72a8e 1449735125000 -->
+
+## [v2.1.0](https://github.com/zoubin/async-array-methods/commit/8c72a8e) (2015-12-10)
+
+* [[`af80f59`](https://github.com/zoubin/async-array-methods/commit/af80f59)] Support series
+
+* [[`78f163f`](https://github.com/zoubin/async-array-methods/commit/78f163f)] CHANGELOG
 
 ## [v2.0.0](https://github.com/zoubin/async-array-methods/commit/709af81) (2015-12-09)
 
