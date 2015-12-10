@@ -22,6 +22,20 @@ test('map', function(t) {
   })
 })
 
+test('series', function(t) {
+  var origin = AsyncArray([1, 3, 5])
+  var delays = [10, 0, 20]
+  return origin.series(function (v, i, arr, next) {
+    setTimeout(function() {
+      next(null, v + 1)
+    }, delays[i])
+  })
+  .then(function (res) {
+    t.same(res, [2, 4, 6])
+  })
+
+})
+
 test('reduce', function(t) {
   var origin = AsyncArray([1, 3, 5])
   return origin.reduce(function (a, b) {

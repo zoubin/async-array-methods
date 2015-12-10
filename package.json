@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/zoubin/async-array-methods#readme",
   "dependencies": {
-    "callback-sequence": "^3.1.0"
+    "callback-sequence": "^3.2.0"
   },
   "devDependencies": {
     "eslint": "^1.5.1",

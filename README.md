@@ -23,6 +23,7 @@ All methods return a promise.
 
 - [filter](#filter)
 - [map](#map)
+- [series](#series)
 - [forEach](#foreach)
 - [reduce](#reduce)
 - [AsyncArray](#asyncarray)
@@ -60,7 +61,7 @@ filter(
 
 Signature: `map(arr, fn, context)`
 
-`fn` is called with elements in parallel.
+`fn` is called with each element in parallel.
 
 ```javascript
 map(
@@ -76,6 +77,38 @@ map(
 )
 // [4, 8, 12, 16]
 .then(console.log.bind(console))
+
+```
+
+### series
+This method works like `map`,
+except that `fn` is called with each element in sequence rather than in parallel.
+
+Signature: `map(arr, fn, context)`
+
+
+```javascript
+var n = 1
+series(
+  [1, 2, 3, 4],
+  function (v, i, arr, next) {
+    var delay = rand()
+    console.log('i:', i, 'delay:', delay)
+    setTimeout(function() {
+      next(null, v << n++)
+    }, delay)
+  }
+)
+// i: 0 delay: 10
+// i: 1 delay: 50
+// i: 2 delay: 0
+// i: 3 delay: 80
+// [2, 8, 24, 64]
+.then(log)
+
+function rand() {
+  return Math.floor(Math.random() * 10) * 10
+}
 
 ```
 
@@ -124,6 +157,13 @@ reduce(
 
 ### AsyncArray
 Signature: `AsyncArray(arr)`
+
+Methods:
+* `map`
+* `series`
+* `filter`
+* `forEach`
+* `reduce`
 
 ```javascript
 var origin = AsyncArray([1, 2, 3, 4, 5, 6])
