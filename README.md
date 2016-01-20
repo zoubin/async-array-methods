@@ -84,7 +84,7 @@ map(
 This method works like `map`,
 except that `fn` is called with each element in sequence rather than in parallel.
 
-Signature: `map(arr, fn, context)`
+Signature: `series(arr, fn, context)`
 
 
 ```javascript
